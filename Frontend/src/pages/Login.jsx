@@ -6,6 +6,7 @@ import "./Login.css";
 export default function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
@@ -15,15 +16,14 @@ export default function Login() {
     const username = form.username.trim();
     const password = form.password;
 
-    // Role is decided entirely by the credentials.
+    // Super Admin — fixed credentials
     if (username === "Admin" && password === "root") {
       try { localStorage.setItem("nx-role", "admin"); } catch { /* storage blocked */ }
       navigate("/app/overview");
       return;
     }
 
-    // Any other username/password is treated as an employee.
-    // (Prototype behaviour — no backend validation.)
+    // Employee — any other non-empty credentials
     if (username.length > 0 && password.length > 0) {
       try { localStorage.setItem("nx-role", "employee"); } catch { /* storage blocked */ }
       navigate("/app/overview");
@@ -81,44 +81,93 @@ export default function Login() {
             </p>
           </header>
 
-          <form className="nx-login__form" onSubmit={handleSubmit}>
-            <label className="nx-field">
-              <span className="nx-field__label">Username</span>
-              <span className="nx-field__wrap">
-                <svg className="nx-field__icon" viewBox="0 0 24 24" width="16" height="16"
-                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="8" r="4"/>
-                  <path d="M4 21a8 8 0 0 1 16 0"/>
-                </svg>
+          {/* autoComplete="off" on the form disables the browser's autofill suggestion layer */}
+          <form className="nx-login__form" onSubmit={handleSubmit} noValidate autoComplete="off">
+            {/* ---------- Username ---------- */}
+            <div className="nx-field">
+              <label className="nx-field__label" htmlFor="nx-username">
+                Username
+              </label>
+              <div className="nx-field__control">
+                <span className="nx-field__icon nx-field__icon--left" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 21a8 8 0 0 1 16 0"/>
+                  </svg>
+                </span>
                 <input
+                  id="nx-username"
+                  name="nx-username"
                   type="text"
-                  placeholder="your handle"
+                  /* Empty placeholder — no hint text at all */
+                  placeholder=""
                   value={form.username}
                   onChange={(e) => setForm({ ...form, username: e.target.value })}
-                  autoComplete="username"
+                  /* autoComplete="off" on the input itself, plus a randomized name,
+                     forces Chrome/Safari/Firefox to skip restoring a saved value */
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
-              </span>
-            </label>
+              </div>
+            </div>
 
-            <label className="nx-field">
-              <span className="nx-field__label">Password</span>
-              <span className="nx-field__wrap">
-                <svg className="nx-field__icon" viewBox="0 0 24 24" width="16" height="16"
-                     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="4" y="11" width="16" height="10" rx="2"/>
-                  <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-                </svg>
+            {/* ---------- Password ---------- */}
+            <div className="nx-field">
+              <label className="nx-field__label" htmlFor="nx-password">
+                Password
+              </label>
+              <div className="nx-field__control">
+                <span className="nx-field__icon nx-field__icon--left" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="11" width="16" height="10" rx="2"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                  </svg>
+                </span>
                 <input
-                  type="password"
-                  placeholder="••••••••"
+                  id="nx-password"
+                  name="nx-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder=""
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  autoComplete="current-password"
+                  /* "new-password" is the only hint Chrome fully respects for
+                     stopping the password manager from restoring the saved value.
+                     It also stops the "Save password?" prompt after submit. */
+                  autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
                   required
                 />
-              </span>
-            </label>
+                <button
+                  type="button"
+                  className="nx-field__icon nx-field__icon--right nx-field__eye"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-pressed={showPassword}
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
+                         stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12Z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
 
             {error && <p className="nx-login__error">{error}</p>}
 

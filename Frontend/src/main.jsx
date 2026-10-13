@@ -7,6 +7,7 @@ import './styles/reset.css';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/utilities.css';
+import './styles/dark-fixes.css';
 
 // Theme bootstrap — apply saved theme before React mounts (no flash)
 try {

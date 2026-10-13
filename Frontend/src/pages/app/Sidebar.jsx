@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Logo from "../../components/Logo.jsx";
 import ThemeToggle from "../../components/ThemeToggle.jsx";
 import { user, notifications } from "../../data/mock.js";
@@ -21,10 +21,42 @@ function getRole() {
 export default function Sidebar() {
   const navigate = useNavigate();
   const [notifOpen, setNotifOpen] = useState(false);
+  const notifRef = useRef(null);
+  const bellRef = useRef(null);
   const unread = notifications.filter((n) => n.unread).length;
   const role = getRole();
-
   const items = NAV.filter((item) => !item.adminOnly || role === "admin");
+
+  /* --- Close notification when clicking anywhere outside it --- */
+  useEffect(() => {
+    if (!notifOpen) return;
+    const handle = (e) => {
+      if (
+        notifRef.current && notifRef.current.contains(e.target)
+      ) return;
+      if (
+        bellRef.current && bellRef.current.contains(e.target)
+      ) return;
+      setNotifOpen(false);
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [notifOpen]);
+
+  /* --- Close on Escape --- */
+  useEffect(() => {
+    if (!notifOpen) return;
+    const handle = (e) => { if (e.key === "Escape") setNotifOpen(false); };
+    document.addEventListener("keydown", handle);
+    return () => document.removeEventListener("keydown", handle);
+  }, [notifOpen]);
+
+  /* --- Close when any modal asks us to --- */
+  useEffect(() => {
+    const close = () => setNotifOpen(false);
+    window.addEventListener("nexus:close-overlays", close);
+    return () => window.removeEventListener("nexus:close-overlays", close);
+  }, []);
 
   return (
     <aside className="nx-side">
@@ -35,9 +67,11 @@ export default function Sidebar() {
           <ThemeToggle className="nx-theme-toggle--dark" />
 
           <button
+            ref={bellRef}
             type="button"
             className="nx-side__bell"
             aria-label={"Notifications (" + unread + " unread)"}
+            aria-expanded={notifOpen}
             onClick={() => setNotifOpen((v) => !v)}
           >
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none"
@@ -50,10 +84,16 @@ export default function Sidebar() {
         </div>
 
         {notifOpen && (
-          <div className="nx-side__notif" role="menu">
+          <div className="nx-side__notif" role="menu" ref={notifRef}>
             <div className="nx-side__notif-head">
               <span>Notifications</span>
-              <button type="button" onClick={() => setNotifOpen(false)} aria-label="Close">×</button>
+              <button
+                type="button"
+                onClick={() => setNotifOpen(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
             </div>
             <ul>
               {notifications.map((n) => (
@@ -93,7 +133,7 @@ export default function Sidebar() {
           type="button"
           className="nx-side__signout"
           onClick={() => {
-            try { localStorage.removeItem("nx-role"); } catch { /* */ }
+            try { localStorage.removeItem("nx-role"); } catch { /* storage blocked */ }
             navigate("/login");
           }}
         >
@@ -110,6 +150,7 @@ export default function Sidebar() {
   );
 }
 
+/* --- Inline icons --- */
 function GridIcon() {
   return (<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
