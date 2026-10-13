@@ -1,0 +1,13 @@
+﻿.nx-foot { background: var(--nx-ink-3); color: #CBD5E1; padding-block: clamp(40px, 6vw, 72px); margin-top: auto; }
+.nx-foot__inner { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; gap: var(--nx-s-8); align-items: start; }
+.nx-foot__brand .nx-logo { color: #fff; }
+.nx-foot__tagline { margin-top: 14px; font-size: var(--nx-fs-sm); color: #94A3B8; max-width: 320px; }
+.nx-foot__head { color: #fff; font-size: var(--nx-fs-xs); text-transform: uppercase; letter-spacing: 0.14em; font-family: var(--nx-font-mono); font-weight: 600; margin-bottom: 16px; }
+.nx-foot__col ul { display: flex; flex-direction: column; gap: 10px; }
+.nx-foot__col a { color: #94A3B8; font-size: var(--nx-fs-sm); transition: color var(--nx-dur-fast) var(--nx-ease-out); }
+.nx-foot__col a:hover { color: #fff; }
+.nx-foot__meta { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; text-align: right; font-size: var(--nx-fs-xs); color: #64748B; }
+@media (max-width: 780px) {
+  .nx-foot__inner { grid-template-columns: 1fr; }
+  .nx-foot__meta { align-items: flex-start; text-align: left; }
+}

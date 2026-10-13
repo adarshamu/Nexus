@@ -1,0 +1,59 @@
+.nx-set { padding: clamp(20px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px; max-width: 900px; }
+
+.nx-set__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.nx-set__title { margin-top: 8px; font-size: 1.7rem; font-weight: 700; letter-spacing: -0.03em; }
+.nx-set__sub   { color: var(--nx-muted); font-size: var(--nx-fs-sm); margin-top: 4px; }
+
+.nx-set__profile {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.nx-set__avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+.nx-set__avatar {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED, #32B8FB);
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  box-shadow: var(--nx-shadow-md);
+}
+.nx-set__avatar-btn {
+  font-size: var(--nx-fs-xs);
+  font-weight: 600;
+  color: var(--nx-accent-ink);
+  cursor: pointer;
+}
+.nx-set__avatar-btn input { display: none; }
+
+.nx-set__fields { display: flex; flex-direction: column; gap: 14px; }
+.nx-set__fields .nx-field input { padding: 12px 14px; }
+
+.nx-set__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--nx-line);
+}
+
+.nx-set__danger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .nx-set__profile { grid-template-columns: 1fr; }
+}

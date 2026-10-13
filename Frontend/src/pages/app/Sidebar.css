@@ -1,0 +1,181 @@
+.nx-side {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--nx-sidebar-bg);
+  color: var(--nx-sidebar-ink);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.nx-side__top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nx-side__brand .nx-logo { color: #fff; }
+
+.nx-side__bell {
+  position: relative;
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: var(--nx-r-sm);
+  color: var(--nx-sidebar-muted);
+  transition: background var(--nx-dur-fast) var(--nx-ease-out);
+}
+.nx-side__bell:hover {
+  background: var(--nx-sidebar-active);
+  color: #fff;
+}
+
+.nx-side__bell-dot {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--nx-accent);
+  box-shadow: 0 0 0 2px var(--nx-sidebar-bg);
+}
+
+.nx-side__notif {
+  position: absolute;
+  top: 42px; right: 0;
+  width: 300px;
+  background: #fff;
+  color: var(--nx-ink);
+  border-radius: var(--nx-r-md);
+  box-shadow: var(--nx-shadow-lg);
+  z-index: 40;
+  padding: 8px;
+  animation: nx-rise 220ms var(--nx-ease-out) both;
+}
+
+@keyframes nx-rise {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.nx-side__notif-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  font-weight: 600;
+  font-size: var(--nx-fs-sm);
+  border-bottom: 1px solid var(--nx-line);
+}
+.nx-side__notif-head button {
+  font-size: 1.2rem;
+  color: var(--nx-muted);
+  line-height: 1;
+}
+
+.nx-side__notif ul {
+  max-height: 320px;
+  overflow-y: auto;
+}
+.nx-side__notif li {
+  padding: 10px;
+  border-radius: var(--nx-r-sm);
+  font-size: var(--nx-fs-xs);
+}
+.nx-side__notif li.is-unread { background: var(--nx-accent-soft-2); }
+.nx-side__notif li strong { display: block; font-size: var(--nx-fs-sm); margin-bottom: 2px; }
+.nx-side__notif li p { color: var(--nx-muted); margin-bottom: 4px; }
+.nx-side__notif-time { color: var(--nx-muted-2); font-size: var(--nx-fs-2xs); }
+
+.nx-side__workspace {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--nx-sidebar-line);
+  border-radius: var(--nx-r-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nx-side__ws-label {
+  font-family: var(--nx-font-mono);
+  font-size: var(--nx-fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--nx-accent);
+  font-weight: 600;
+}
+.nx-side__ws-name { color: #fff; font-size: var(--nx-fs-sm); font-weight: 600; }
+.nx-side__ws-mail { color: var(--nx-sidebar-muted); font-size: var(--nx-fs-2xs); }
+
+.nx-side__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.nx-side__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--nx-r-sm);
+  font-size: var(--nx-fs-sm);
+  color: var(--nx-sidebar-muted);
+  transition:
+    background var(--nx-dur-fast) var(--nx-ease-out),
+    color var(--nx-dur-fast) var(--nx-ease-out);
+}
+
+.nx-side__link:hover {
+  background: var(--nx-sidebar-active);
+  color: #fff;
+}
+
+.nx-side__link.is-active {
+  background: var(--nx-sidebar-active);
+  color: #fff;
+  font-weight: 600;
+}
+
+.nx-side__link.is-active svg { color: var(--nx-accent); }
+
+.nx-side__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nx-side__hint {
+  background: #FEF3C7;
+  color: #78350F;
+  border-radius: var(--nx-r-sm);
+  padding: 12px;
+  font-size: var(--nx-fs-2xs);
+  line-height: 1.55;
+}
+.nx-side__hint strong {
+  display: block;
+  font-size: var(--nx-fs-xs);
+  margin-bottom: 4px;
+  color: #78350F;
+}
+
+.nx-side__signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--nx-r-sm);
+  font-size: var(--nx-fs-sm);
+  color: var(--nx-sidebar-muted);
+  border: 1px solid var(--nx-sidebar-line);
+  transition: all var(--nx-dur-fast) var(--nx-ease-out);
+}
+.nx-side__signout:hover {
+  color: #fff;
+  background: var(--nx-sidebar-active);
+}

@@ -1,0 +1,19 @@
+.nx-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--nx-ink);
+}
+
+.nx-logo__text {
+  font-size: 1.1rem;
+}
+
+.nx-logo__mark {
+  flex-shrink: 0;
+  transition: transform var(--nx-dur-ui) var(--nx-ease-out);
+}
+
+.nx-logo:hover .nx-logo__mark { transform: rotate(45deg); }
