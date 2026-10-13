@@ -1,17 +1,21 @@
-import { useState } from 'react';
-import { experts } from '../../data/mock.js';
-import './HumanAPI.css';
-
-const STATUS = {
-  active:  { label: 'Active',  tone: 'good' },
-  busy:    { label: 'Busy',    tone: 'warn' },
-  offline: { label: 'Offline', tone: 'muted' }
-};
+import { useState } from "react";
+import { experts, conversationSeeds, demoMessages } from "../../data/mock.js";
+import LandscapeAvatar from "../../components/LandscapeAvatar.jsx";
+import "./HumanAPI.css";
 
 export default function HumanAPI() {
-  const [mode, setMode] = useState('ai');
-  const [selected, setSelected] = useState(experts[0]);
+  const [activeExpert, setActiveExpert] = useState(null);
 
+  if (activeExpert) {
+    return <ChatView expert={activeExpert} onBack={() => setActiveExpert(null)} />;
+  }
+  return <ExpertsList onOpenChat={setActiveExpert} />;
+}
+
+/* ============================================================
+   EXPERTS LIST
+   ============================================================ */
+function ExpertsList({ onOpenChat }) {
   return (
     <div className="nx-ha">
       <header className="nx-ha__head">
@@ -19,132 +23,210 @@ export default function HumanAPI() {
           <span className="nx-eyebrow">Human API</span>
           <h1 className="nx-ha__title">Find problem-specific expertise</h1>
           <p className="nx-ha__sub">
-            Describe a technical issue and see expert matches with reasons and live availability.
+            Pick an expert to open a chat. If they are offline, their Bot steps
+            in so you can still move forward.
           </p>
         </div>
       </header>
 
-      {/* Problem input */}
-      <section className="nx-ha__problem">
-        <label className="nx-ha__label" htmlFor="ha-problem">Sample problem</label>
-        <textarea
-          id="ha-problem"
-          className="nx-ha__input"
-          defaultValue="React state updates from a child modal are lost when the parent list re-renders."
-          rows={3}
-        />
-        <div className="nx-ha__chips">
-          <span className="nx-chip">React</span>
-          <span className="nx-chip">State management</span>
-        </div>
+      <section className="nx-ha__experts">
+        {experts.map((e) => {
+          const available = e.status === "active";
+          return (
+            <article key={e.id} className="nx-ecard">
+              <LandscapeAvatar variant={e.avatar} size={64} />
 
-        <div className="nx-ha__mode">
-          <button
-            className={`nx-ha__mode-btn ${mode === 'ai' ? 'is-active' : ''}`}
-            onClick={() => setMode('ai')}
-          >
-            AI match
-          </button>
-          <button
-            className={`nx-ha__mode-btn ${mode === 'manual' ? 'is-active' : ''}`}
-            onClick={() => setMode('manual')}
-          >
-            Manual selection
-          </button>
-        </div>
-      </section>
-
-      <div className="nx-ha__body">
-        {/* Expert list */}
-        <section className="nx-ha__list" aria-label="Experts">
-          <header className="nx-ha__list-head">
-            <h2 className="nx-ha__list-title">Matched experts</h2>
-            <span className="nx-ha__list-count">{experts.length} results</span>
-          </header>
-
-          {experts.map((e) => (
-            <button
-              key={e.id}
-              type="button"
-              className={`nx-expert ${selected.id === e.id ? 'is-selected' : ''}`}
-              onClick={() => setSelected(e)}
-            >
-              <span className="nx-expert__avatar">{e.initials}</span>
-              <div className="nx-expert__info">
-                <div className="nx-expert__row">
-                  <span className="nx-expert__name">{e.name}</span>
-                  <span className={`nx-status nx-status--${STATUS[e.status].tone}`}>
-                    <span className="nx-status__dot" />
-                    {STATUS[e.status].label}
-                  </span>
+              <div className="nx-ecard__body">
+                <div className="nx-ecard__line">
+                  <span className="nx-ecard__name">{e.name}</span>
+                  <span className="nx-ecard__score">{e.proficiency}%</span>
+                  <span className="nx-ecard__skill">{e.skill}</span>
+                  {available && (
+                    <span className="nx-ecard__status">
+                      <span className="nx-ecard__dot" />
+                      active
+                    </span>
+                  )}
+                  {!available && (
+                    <span className="nx-ecard__status nx-ecard__status--off">
+                      not available
+                    </span>
+                  )}
                 </div>
-                <span className="nx-expert__domain">{e.domain}</span>
-                <div className="nx-expert__prof">
-                  <div className="nx-bar nx-bar--tiny">
-                    <span style={{ width: `${e.proficiency}%` }} />
-                  </div>
-                  <span className="nx-expert__pct">{e.proficiency}%</span>
+                <p className="nx-ecard__reason">{e.reason}</p>
+
+                <div className="nx-ecard__footer">
+                  {available ? (
+                    <button
+                      className="nx-btn nx-btn--accent nx-ecard__cta"
+                      onClick={() => onOpenChat(e)}
+                    >
+                      Chat with {e.name}
+                    </button>
+                  ) : (
+                    <button
+                      className="nx-btn nx-btn--primary nx-ecard__cta"
+                      onClick={() => onOpenChat(e)}
+                    >
+                      Chat with {e.name}'s Bot
+                    </button>
+                  )}
                 </div>
               </div>
-            </button>
-          ))}
-        </section>
-
-        {/* Expert detail */}
-        <section className="nx-ha__detail">
-          <div className="nx-ha__detail-head">
-            <span className="nx-expert__avatar nx-expert__avatar--lg">{selected.initials}</span>
-            <div>
-              <div className="nx-ha__detail-name">{selected.name}</div>
-              <div className="nx-ha__detail-role">{selected.role}</div>
-            </div>
-            <span className={`nx-status nx-status--${STATUS[selected.status].tone}`}>
-              <span className="nx-status__dot" />
-              {STATUS[selected.status].label}
-            </span>
-          </div>
-
-          <div className="nx-ha__detail-tags">
-            {selected.domain.split(' · ').map((t) => (
-              <span key={t} className="nx-chip nx-chip--soft">{t}</span>
-            ))}
-          </div>
-
-          <div className="nx-ha__reason">
-            <span className="nx-ha__reason-label">Match reason</span>
-            <p>{selected.reason}</p>
-          </div>
-
-          <div className="nx-ha__proficiency">
-            <span className="nx-ha__proficiency-label">Proficiency</span>
-            <div className="nx-bar"><span style={{ width: `${selected.proficiency}%` }} /></div>
-            <span className="nx-ha__proficiency-pct">{selected.proficiency}%</span>
-          </div>
-
-          <div className="nx-ha__actions">
-            {selected.status === 'offline' ? (
-              <button className="nx-btn nx-btn--primary nx-ha__cta">
-                Chat with bot
-              </button>
-            ) : (
-              <button className="nx-btn nx-btn--accent nx-ha__cta">
-                Start conversation
-              </button>
-            )}
-            <button className="nx-btn nx-btn--ghost nx-ha__cta">
-              View profile
-            </button>
-          </div>
-
-          <div className="nx-ha__switch">
-            <span>Dev Clone</span>
-            <label className="nx-switch">
-              <input type="checkbox" />
-              <span className="nx-switch__slider" />
-            </label>
-          </div>
-        </section>
-      </div>
+            </article>
+          );
+        })}
+      </section>
     </div>
   );
+}
+
+/* ============================================================
+   CHAT VIEW
+   ============================================================ */
+function ChatView({ expert, onBack }) {
+  const [draft, setDraft] = useState("");
+  const [messages, setMessages] = useState(demoMessages);
+  const isBot = expert.status !== "active";
+
+  const send = (e) => {
+    e.preventDefault();
+    const text = draft.trim();
+    if (!text) return;
+    setMessages((m) => [
+      ...m,
+      { id: m.length + 1, from: "me", text, time: nowTime() }
+    ]);
+    setDraft("");
+    setTimeout(() => {
+      setMessages((m) => [
+        ...m,
+        {
+          id: m.length + 1,
+          from: "expert",
+          text: isBot
+            ? `(${expert.name}'s Bot) Noted. Cross-referencing the shared knowledge base — one moment.`
+            : "Got it. Let me look at that now.",
+          time: nowTime()
+        }
+      ]);
+    }, 700);
+  };
+
+  return (
+    <div className="nx-chat">
+      {/* Left: conversations */}
+      <aside className="nx-chat__side">
+        <div className="nx-chat__search">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none"
+               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" placeholder="Search conversations" />
+        </div>
+
+        <ul className="nx-chat__convs">
+          {conversationSeeds.map((c) => {
+            const isActive = c.name === expert.name;
+            return (
+              <li key={c.id} className={"nx-conv " + (isActive ? "is-active" : "")}>
+                <LandscapeAvatar variant={c.avatar} size={40} />
+                <div className="nx-conv__body">
+                  <div className="nx-conv__row">
+                    <span className="nx-conv__name">{c.name}</span>
+                    <span className="nx-conv__time">{c.time}</span>
+                  </div>
+                  <div className="nx-conv__row">
+                    <span className="nx-conv__preview">{c.preview}</span>
+                    {c.unread > 0 && <span className="nx-conv__badge">{c.unread}</span>}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </aside>
+
+      {/* Right: chat panel */}
+      <section className="nx-chat__panel">
+        <header className="nx-chat__head">
+          <button className="nx-chat__back" onClick={onBack} aria-label="Back to experts">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+
+          <LandscapeAvatar variant={expert.avatar} size={44} />
+
+          <div className="nx-chat__who">
+            <div className="nx-chat__name">
+              {expert.name}
+              {isBot && <span className="nx-chat__botlabel"> · Bot</span>}
+            </div>
+            <div className="nx-chat__tags">
+              <span>{expert.proficiency}%</span>
+              <span>{expert.skill}</span>
+            </div>
+          </div>
+
+          <span className={"nx-chat__status nx-chat__status--" + statusTone(expert.status)}>
+            <span className="nx-chat__dot" />
+            {statusLabel(expert.status)}
+          </span>
+        </header>
+
+        <details className="nx-chat__context">
+          <summary>Problem context</summary>
+          <p>
+            React state updates from a child modal are lost when the parent
+            list re-renders.
+          </p>
+        </details>
+
+        <div className="nx-chat__stream">
+          <div className="nx-chat__daymark">Today · local history</div>
+
+          {messages.map((m) => (
+            <div key={m.id} className={"nx-msg nx-msg--" + (m.from === "me" ? "me" : "expert")}>
+              <div className="nx-msg__bubble">{m.text}</div>
+              <div className="nx-msg__meta">{m.time} · Read</div>
+            </div>
+          ))}
+        </div>
+
+        <form className="nx-chat__composer" onSubmit={send}>
+          <input
+            type="text"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder={"Message " + expert.name + (isBot ? "'s Bot…" : "…")}
+          />
+          <button type="submit" aria-label="Send" className="nx-chat__send">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 2 11 13"/>
+              <path d="M22 2 15 22l-4-9-9-4Z"/>
+            </svg>
+          </button>
+        </form>
+      </section>
+    </div>
+  );
+}
+
+function statusTone(s) {
+  if (s === "active") return "good";
+  if (s === "busy") return "warn";
+  return "muted";
+}
+function statusLabel(s) {
+  if (s === "active") return "Available";
+  if (s === "busy") return "Busy";
+  return "Offline";
+}
+function nowTime() {
+  const d = new Date();
+  return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
 }

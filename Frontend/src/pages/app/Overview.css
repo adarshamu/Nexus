@@ -5,7 +5,14 @@
 .nx-overview__actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .nx-overview__kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
-.nx-kpi { background: var(--nx-surface); border: 1px solid var(--nx-line); border-radius: var(--nx-r-lg); padding: 18px; display: flex; flex-direction: column; gap: 6px; transition: transform var(--nx-dur-ui) var(--nx-ease-out); }
+.nx-kpi {
+  background: var(--nx-surface);
+  border: 1px solid var(--nx-line);
+  border-radius: var(--nx-r-lg);
+  padding: 18px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: transform var(--nx-dur-ui) var(--nx-ease-out);
+}
 .nx-kpi:hover { transform: translateY(-2px); }
 .nx-kpi__head { display: flex; justify-content: space-between; align-items: center; }
 .nx-kpi__label { font-size: var(--nx-fs-xs); color: var(--nx-muted); font-weight: 500; }
@@ -34,11 +41,9 @@
 .nx-skill { border: 1px solid var(--nx-line); border-radius: var(--nx-r-md); padding: 12px; }
 .nx-skill__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .nx-skill__name { font-size: var(--nx-fs-sm); font-weight: 600; }
-
 .nx-pill { font-family: var(--nx-font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: var(--nx-r-pill); }
 .nx-pill--improving { background: var(--nx-success-soft); color: #047857; }
 .nx-pill--focus     { background: var(--nx-warn-soft);    color: #92400E; }
-
 .nx-bar { height: 6px; background: var(--nx-bg-alt); border-radius: var(--nx-r-pill); overflow: hidden; margin-bottom: 6px; }
 .nx-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--nx-accent), #0A6FA0); border-radius: inherit; }
 .nx-skill__meta { font-size: 0.68rem; color: var(--nx-muted); }
@@ -60,24 +65,15 @@
 .nx-reco__title { font-size: var(--nx-fs-sm); font-weight: 600; }
 .nx-reco__reason { font-size: var(--nx-fs-xs); color: var(--nx-muted); margin-top: 3px; }
 
-.nx-board { display: flex; flex-direction: column; gap: 6px; }
-.nx-board__row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--nx-r-md); background: var(--nx-bg-alt); }
-.nx-board__row--self { background: var(--nx-accent-soft-2); box-shadow: inset 0 0 0 1px var(--nx-accent); }
-.nx-board__rank { width: 20px; font-family: var(--nx-font-mono); font-weight: 700; font-size: var(--nx-fs-xs); color: var(--nx-muted); }
-.nx-board__avatar { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--nx-ink); color: #fff; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
-.nx-board__row--self   .nx-board__avatar { background: var(--nx-accent); }
-.nx-board__row--gold   .nx-board__avatar { background: linear-gradient(135deg, #F59E0B, #D97706); }
-.nx-board__row--silver .nx-board__avatar { background: linear-gradient(135deg, #94A3B8, #64748B); }
-.nx-board__row--bronze .nx-board__avatar { background: linear-gradient(135deg, #B45309, #92400E); }
-.nx-board__info { display: flex; flex-direction: column; }
-.nx-board__name { font-size: var(--nx-fs-sm); font-weight: 600; }
-.nx-board__meta { font-size: var(--nx-fs-xs); color: var(--nx-muted); }
+/* Weekly bars */
+.nx-weekbars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; align-items: end; height: 160px; padding-block: 8px; }
+.nx-weekbars__col { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
+.nx-weekbars__bar { flex: 1; width: 100%; background: var(--nx-bg-alt); border-radius: var(--nx-r-sm); display: flex; align-items: flex-end; overflow: hidden; }
+.nx-weekbars__bar span { display: block; width: 100%; background: linear-gradient(180deg, var(--nx-accent), #0A6FA0); border-radius: var(--nx-r-sm); }
+.nx-weekbars__label { font-size: var(--nx-fs-2xs); color: var(--nx-muted); font-weight: 600; }
 
 @media (max-width: 1100px) {
   .nx-overview__kpis { grid-template-columns: repeat(2, 1fr); }
-  .nx-overview__grid,
-  .nx-overview__grid--bottom { grid-template-columns: 1fr; }
+  .nx-overview__grid, .nx-overview__grid--bottom { grid-template-columns: 1fr; }
 }
-@media (max-width: 640px) {
-  .nx-skillgrid { grid-template-columns: 1fr; }
-}
+@media (max-width: 640px) { .nx-skillgrid { grid-template-columns: 1fr; } }

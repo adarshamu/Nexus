@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import {
   user, dashboardCards, stack, skillRows,
-  strengthsFocus, difficultyCategories, leaderboard
+  strengthsFocus, difficultyCategories
 } from "../../data/mock.js";
 import "./Overview.css";
 
@@ -12,21 +12,13 @@ export default function Overview() {
     <div className="nx-overview">
       <header className="nx-overview__head">
         <div>
-          <span className="nx-eyebrow">Developer · Overview</span>
-          <h1 className="nx-overview__title">
-            Good morning, {user.name.split(" ")[0]}
-          </h1>
-          <p className="nx-overview__sub">
-            Here is your illustrative learning snapshot for {user.batch}.
-          </p>
+          <span className="nx-eyebrow">Employee · Overview</span>
+          <h1 className="nx-overview__title">Good morning, {user.name.split(" ")[0]}</h1>
+          <p className="nx-overview__sub">Here is your illustrative learning snapshot for {user.batch}.</p>
         </div>
-
         <div className="nx-overview__actions">
           <button className="nx-btn nx-btn--ghost">Continue learning</button>
-          <button
-            className="nx-btn nx-btn--primary"
-            onClick={() => navigate("/app/human-api")}
-          >
+          <button className="nx-btn nx-btn--primary" onClick={() => navigate("/app/human-api")}>
             Use Human API
           </button>
         </div>
@@ -50,18 +42,12 @@ export default function Overview() {
           <header className="nx-panel__head">
             <div>
               <h2 className="nx-panel__title">Technology stack</h2>
-              <p className="nx-panel__sub">
-                Sample interests from profile settings
-              </p>
+              <p className="nx-panel__sub">Sample interests from profile settings</p>
             </div>
           </header>
-
           <div className="nx-chips">
-            {stack.map((s) => (
-              <span key={s} className="nx-chip">{s}</span>
-            ))}
+            {stack.map((s) => <span key={s} className="nx-chip">{s}</span>)}
           </div>
-
           <div className="nx-skillgrid">
             {skillRows.map((s) => (
               <div key={s.name} className="nx-skill">
@@ -69,12 +55,8 @@ export default function Overview() {
                   <span className="nx-skill__name">{s.name}</span>
                   <span className={"nx-pill nx-pill--" + s.tone}>{s.status}</span>
                 </div>
-                <div className="nx-bar">
-                  <span style={{ width: s.value + "%" }} />
-                </div>
-                <span className="nx-skill__meta">
-                  Illustrative proficiency · {s.value}%
-                </span>
+                <div className="nx-bar"><span style={{ width: s.value + "%" }} /></div>
+                <span className="nx-skill__meta">Illustrative proficiency · {s.value}%</span>
               </div>
             ))}
           </div>
@@ -84,12 +66,9 @@ export default function Overview() {
           <header className="nx-panel__head">
             <div>
               <h2 className="nx-panel__title">Strengths and focus areas</h2>
-              <p className="nx-panel__sub">
-                Evidence summaries are illustrative and explainable
-              </p>
+              <p className="nx-panel__sub">Evidence summaries are illustrative and explainable</p>
             </div>
           </header>
-
           <div className="nx-callout-list">
             {strengthsFocus.map((f) => (
               <article key={f.title} className={"nx-callout nx-callout--" + f.kind}>
@@ -98,15 +77,10 @@ export default function Overview() {
               </article>
             ))}
           </div>
-
           <div className="nx-difficulties">
-            <span className="nx-difficulties__label">
-              Recurring difficulty categories
-            </span>
+            <span className="nx-difficulties__label">Recurring difficulty categories</span>
             <div className="nx-chips">
-              {difficultyCategories.map((d) => (
-                <span key={d} className="nx-chip nx-chip--soft">{d}</span>
-              ))}
+              {difficultyCategories.map((d) => <span key={d} className="nx-chip nx-chip--soft">{d}</span>)}
             </div>
           </div>
         </section>
@@ -119,38 +93,26 @@ export default function Overview() {
               <h2 className="nx-panel__title">Recommended courses</h2>
               <p className="nx-panel__sub">Reasons shown for transparency</p>
             </div>
-            <button
-              className="nx-panel__link"
-              onClick={() => navigate("/app/skillquest")}
-            >
+            <button className="nx-panel__link" onClick={() => navigate("/app/skillquest")}>
               Open SkillQuest
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
-                   stroke="currentColor" strokeWidth="2"
-                   strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
               </svg>
             </button>
           </header>
-
           <ul className="nx-recos">
             <li className="nx-reco">
               <div className="nx-reco__title">Testing React Applications</div>
-              <div className="nx-reco__reason">
-                Because Testing is flagged as a focus area.
-              </div>
+              <div className="nx-reco__reason">Because Testing is flagged as a focus area.</div>
             </li>
             <li className="nx-reco">
               <div className="nx-reco__title">State Management Deep Dive</div>
-              <div className="nx-reco__reason">
-                Because Async state recurs in difficulty categories.
-              </div>
+              <div className="nx-reco__reason">Because Async state recurs in difficulty categories.</div>
             </li>
             <li className="nx-reco">
               <div className="nx-reco__title">TypeScript for React Devs</div>
-              <div className="nx-reco__reason">
-                Because generics constraints came up in sample evidence.
-              </div>
+              <div className="nx-reco__reason">Because generics constraints came up in sample evidence.</div>
             </li>
           </ul>
         </section>
@@ -158,23 +120,18 @@ export default function Overview() {
         <section className="nx-panel">
           <header className="nx-panel__head">
             <div>
-              <h2 className="nx-panel__title">Batch leaderboard preview</h2>
-              <p className="nx-panel__sub">{user.batch}</p>
+              <h2 className="nx-panel__title">Your progress this week</h2>
+              <p className="nx-panel__sub">Illustrative daily activity</p>
             </div>
           </header>
-
-          <ol className="nx-board">
-            {leaderboard.map((p) => (
-              <li key={p.rank} className={"nx-board__row nx-board__row--" + p.tone}>
-                <span className="nx-board__rank">{p.rank}</span>
-                <span className="nx-board__avatar">{p.initials}</span>
-                <div className="nx-board__info">
-                  <span className="nx-board__name">{p.name}</span>
-                  <span className="nx-board__meta">{p.meta}</span>
-                </div>
-              </li>
+          <div className="nx-weekbars" aria-hidden="true">
+            {[38, 62, 48, 80, 55, 90, 42].map((v, i) => (
+              <div key={i} className="nx-weekbars__col">
+                <div className="nx-weekbars__bar"><span style={{ height: v + "%" }} /></div>
+                <span className="nx-weekbars__label">{["M","T","W","T","F","S","S"][i]}</span>
+              </div>
             ))}
-          </ol>
+          </div>
         </section>
       </div>
     </div>

@@ -1,6 +1,6 @@
-export default function Logo({ size = 28, showText = true, className = '' }) {
+export default function Logo({ size = 44, showText = true, className = "" }) {
   return (
-    <span className={`nx-logo ${className}`}>
+    <span className={"nx-logo " + className}>
       <svg
         width={size}
         height={size}

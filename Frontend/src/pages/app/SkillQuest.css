@@ -8,7 +8,6 @@
 .nx-sq__tab.is-active { background: var(--nx-surface); color: var(--nx-ink); box-shadow: var(--nx-shadow-xs); }
 
 .nx-sq__courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-
 .nx-course { background: var(--nx-surface); border: 1px solid var(--nx-line); border-radius: var(--nx-r-lg); overflow: hidden; display: flex; flex-direction: column; transition: transform var(--nx-dur-ui) var(--nx-ease-out), box-shadow var(--nx-dur-ui) var(--nx-ease-out); }
 .nx-course:hover { transform: translateY(-3px); box-shadow: var(--nx-shadow-md); }
 .nx-course__thumb { height: 92px; background: linear-gradient(135deg, var(--nx-accent-soft), var(--nx-surface-3)); display: grid; place-items: center; }
@@ -25,6 +24,12 @@
 
 .nx-sq__progress { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
 
+.nx-weekbars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; align-items: end; height: 160px; padding-block: 8px; }
+.nx-weekbars__col { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
+.nx-weekbars__bar { flex: 1; width: 100%; background: var(--nx-bg-alt); border-radius: var(--nx-r-sm); display: flex; align-items: flex-end; overflow: hidden; }
+.nx-weekbars__bar span { display: block; width: 100%; background: linear-gradient(180deg, var(--nx-accent), #0A6FA0); border-radius: var(--nx-r-sm); }
+.nx-weekbars__label { font-size: var(--nx-fs-2xs); color: var(--nx-muted); font-weight: 600; }
+
 .nx-sq__insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
 .nx-insight { display: flex; flex-direction: column; gap: 10px; }
 .nx-insight__tag { align-self: flex-start; font-family: var(--nx-font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--nx-r-pill); background: var(--nx-bg-alt); color: var(--nx-ink); }
@@ -33,6 +38,4 @@
 .nx-insight__title { font-size: 1rem; font-weight: 700; }
 .nx-insight__body { font-size: var(--nx-fs-sm); color: var(--nx-muted); line-height: 1.65; }
 
-@media (max-width: 900px) {
-  .nx-sq__progress { grid-template-columns: 1fr; }
-}
+@media (max-width: 900px) { .nx-sq__progress { grid-template-columns: 1fr; } }

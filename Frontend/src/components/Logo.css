@@ -1,19 +1,49 @@
+/* ==========================================================================
+   LOGO
+   ========================================================================== */
+
 .nx-logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--nx-ink);
-}
-
-.nx-logo__text {
-  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
 }
 
 .nx-logo__mark {
   flex-shrink: 0;
-  transition: transform var(--nx-dur-ui) var(--nx-ease-out);
+  display: block;
+  color: inherit;
 }
 
-.nx-logo:hover .nx-logo__mark { transform: rotate(45deg); }
+.nx-logo__text {
+  font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', Roboto, sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: #0F172A;         /* dark slate in light mode */
+  padding-right: 2px;
+}
+
+/* Dark theme — flip to near-white */
+:root[data-theme="dark"] .nx-logo__text {
+  color: #F1F5F9;
+}
+
+/* Sidebar (always dark) — force light */
+.nx-side .nx-logo__text {
+  color: #FFFFFF;
+}
+
+/* Footer (always dark) — force light */
+.nx-foot .nx-logo__text {
+  color: #FFFFFF;
+}
+
+/* Landing hero backdrop */
+.nx-hero__logo-bg .nx-logo {
+  color: var(--nx-accent);
+}

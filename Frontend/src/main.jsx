@@ -8,6 +8,14 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/utilities.css';
 
+// Theme bootstrap — apply saved theme before React mounts (no flash)
+try {
+  const saved = localStorage.getItem('nx-theme');
+  const theme = saved === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
+} catch { /* storage blocked — default light */ }
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
